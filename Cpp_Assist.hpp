@@ -72,8 +72,12 @@ virtual
 
 // Inlines
 
-// Alias for an inline variable that is supposed to have a constant value, but exist in mutiple definitions.
-#define Superposition \
+// Context for when doing inline for the explicit purpose of optimizing execution due to lag from function call.
+#define sub \
+inline
+
+// Alias for an inline variable that is supposed to have a constant value, but exist in multiple definitions.
+#define superpos \
 inline
 
 // Namespaces
@@ -84,7 +88,7 @@ inline
 
 // Used in context with a namespace declaration intended to be a filter for a base namespace (transparent subset).
 #define filter \
-inline
+inline namespace
 
 
 // Memory
@@ -157,7 +161,7 @@ sfn Allocate(ParamType _param) -> Ref(Type)
 template<typename Type>
 sfn Deallocate(ro Ref(Type) _instanceRef) -> void
 {
-	delete(getAddress(_instanceRef));
+	delete(dref(_instanceRef));
 }
 
 
@@ -214,15 +218,27 @@ sfn CVCast(ro Ref(Type) _instance) -> Ref(Type)
 }
 
 template<typename Derived, typename Base>
-sfn DCast(ro Ref(ptr<Base>) _instance) -> ptr<Derived>
-{
-	return dynamic_cast<ptr<Derived>>(_instance);
-}
-
-template<typename Derived, typename Base>
 sfn DCast(ro Ref(Base) _instance) -> Derived
 {
 	return dynamic_cast<Ref(Derived)>(_instance);
+}
+
+template<typename Derived, typename Base>
+sfn DCast(ro Ref(ptr<Base>) _instance) -> ptr<Derived>
+{
+	return dynamic_cast< ptr<Derived> >(_instance);
+}
+
+template<typename Derived, typename Base>
+sfn SCast(Ref(Base) _instance) -> Derived
+{
+	return static_cast<Derived>(_instance);
+}
+
+template<typename Derived, typename Base>
+sfn SCast(ro Ref(ptr<Base>) _instance) -> ptr<Derived>
+{
+	return static_cast< ptr<Derived> >(_instance);
 }
 
 // Concepts and Constraints
