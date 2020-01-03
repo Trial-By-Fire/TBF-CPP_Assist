@@ -23,7 +23,7 @@ An early version of TBF C assist. Do not put in the TBF repo. Also a transcriber
 #define alias(_typeToAlias) \
 typedef _typeToAlias
 
-#define as
+#define type_as
 
 
 //Array Stuff:
@@ -40,7 +40,7 @@ enum ExecFlags_Def
 	ExecFlag_Sucess = 0,
 };
 
-alias(enum ExecFlags_Def) ExecFlags;
+alias(enum ExecFlags_Def) type_as ExecFlags;
 
 //An alias to the return type used for the entry point function of C/C++.
 #define ResultCode \
@@ -65,7 +65,7 @@ extern
 //Functions:
 
 //Makes function indication explicit.
-#define fn(_type) \
+#define _fn(_type) \
 _type
 
 //Creates a pointer to a function.
@@ -136,7 +136,7 @@ _type*
 &_instance
 
 //Provides a more explicit method for dereferencing a pointer. (Get value contained at address)
-#define val(_pointer) \
+#define obj(_pointer) \
 *_pointer
 
 
@@ -149,6 +149,15 @@ Specifies the instance to allocate within the stack, and live until the end of i
 #define Stack(_type) \
 _type
 
+#define Data(_type) \
+_type
+
+#define BSS(_type) \
+_type
+
+#define Heap(_Allocator) \
+_Allocator
+
 
 //Typedefs
 
@@ -160,7 +169,7 @@ typedef unsigned long long int uInt64;   //unsigned 64-bit integer.
 //Functions
 
 //Provides a overhead function for using the malloc and calloc memory functions.
-fn(void) Allocate
+_fn(void) Allocate
 (
 	Ptr(Ptr(void)) _instanceToAllocate,
 	uInt64         _numOfObjects      ,
@@ -169,4 +178,7 @@ fn(void) Allocate
 );
 
 //Provides a overhead function for using the free memory function.
-fn(void) Deallocate(Ptr(void) _instanceToDeallocate);
+_fn(void) Deallocate(Ptr(void) _instanceToDeallocate);
+
+
+#define toggle(_bool) _bool ^= true;

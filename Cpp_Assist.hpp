@@ -36,7 +36,7 @@ auto
 // Functions
 
 // Aliases auto with SFn to indicate a suffix based function.  Use it for rust style functions.
-// The should be just as efficient as regular prefix functions, but I don't know everything so keep that in mind I guess.
+// The should be just type_as efficient type_as regular prefix functions, but I don't know everything so keep that in mind I guess.
 #define sfn \
 auto
 
@@ -67,7 +67,7 @@ auto
 // Inheritance
 
 // Alias for virtual in the context of a derived class implementing a virtual member.
-#define impl \
+#define implem \
 virtual
 
 // Inlines
@@ -82,7 +82,7 @@ inline
 
 // Namespaces
 
-// Used in context with a namespace declaration to signify as the latest. (If using a versioning scheme for namespacing.
+// Used in context with a namespace declaration to signify type_as the latest. (If using a versioning scheme for namespacing.
 #define latest \
 inline
 
@@ -124,12 +124,26 @@ using roPtrToRO = ro Type* ro;
 
 template<typename Type>
 /*
-Specifies the instance to allocate within the stack, and live until the end of its block scope.
+Specifies to allocate the object within the stack, and live until the end of its block scope.
 (Explicit indication. Does not do anything)
 
-Template version of the C-Assist Scope macro.
+Template version of the C-Assist Stack macro.
 */
 using stack = Type;
+
+template<typename Type>
+/*
+Specifies to allocate the object within the Data segment or initialization specified.
+(Explicit indication. Does not do anything)
+*/
+using data = Type;
+
+template<typename Type>
+/*
+Specifies to allocate the object within the BSS segment or uninitialized data.
+(Explicit indication. Does not do anything)
+*/
+using bss = Type;
 
 template<typename Type>
 /*
@@ -137,7 +151,7 @@ Template version of a dereferencer. (
 */
 sfn dref(ro Ref(ptr<Type>) _ptr) -> Ref(Type)
 {
-	return val(_ptr);
+	return obj(_ptr);
 }
 
 template<typename Type>
@@ -243,5 +257,11 @@ sfn SCast(ro Ref(ptr<Base>) _instance) -> ptr<Derived>
 
 // Concepts and Constraints
 
-#define constraint \
+#define M_constraint \
 static_assert
+
+#define where(_type, _enableConstraint) \
+_enableConstraint<_type, 
+
+#define returns(_returnType) \
+_returnType>

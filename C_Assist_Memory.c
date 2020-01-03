@@ -16,7 +16,7 @@ Contains implementation of the memory functions found within the header.
 #include <corecrt_malloc.h>
 
 
-fn(void) Allocate
+_fn(void) Allocate
 (
 	Ptr(Ptr(void)) _instanceToAllocate,
 	uInt64         _numOfObjects,
@@ -26,17 +26,17 @@ fn(void) Allocate
 {
 	if (_shouldInitalize == 0)
 	{
-		val(_instanceToAllocate) = malloc(_sizeOfObject * _numOfObjects);
+		obj(_instanceToAllocate) = malloc(_sizeOfObject * _numOfObjects);
 	}
 	else
 	{
-		val(_instanceToAllocate) = calloc(_numOfObjects, _sizeOfObject);
+		obj(_instanceToAllocate) = calloc(_numOfObjects, _sizeOfObject);
 	}
 
 	return;
 }
 
-fn(void) Deallocate(Ptr(void) _instanceToDeallocate)
+_fn(void) Deallocate(Ptr(void) _instanceToDeallocate)
 {
 	if (_instanceToDeallocate != NULL)
 	{
